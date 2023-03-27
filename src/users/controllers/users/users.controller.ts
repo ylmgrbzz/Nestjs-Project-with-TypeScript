@@ -2,6 +2,7 @@ import { Body, Controller, Get, HttpException, HttpStatus, Param, ParseBoolPipe,
 import { Request, Response } from 'express';
 import { CreateUserDto } from 'src/users/dtos/CreateUser.dto';
 import { UsersService } from '../../services/users/users.service';
+import { ValidateCreateUserPipe } from 'src/users/pipes/validate-create-user/validate-create-user.pipe';
 
 @Controller('users')
 export class UsersController {
@@ -50,8 +51,9 @@ export class UsersController {
 
     @Post('create')
     @UsePipes(new ValidationPipe())
-    createUser(@Body() userData: CreateUserDto) {
+    createUser(@Body(ValidateCreateUserPipe) userData: CreateUserDto) {
         console.log(userData);
+        console.log(userData.age.toPrecision());
         return this.userService.createUser(userData);
         // return {
         //     message: 'User created successfully'
